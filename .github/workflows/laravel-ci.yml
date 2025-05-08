@@ -60,3 +60,4 @@ jobs:
         DB_CONNECTION: sqlite
         DB_DATABASE: database/database.sqlite # Use the committed database for tests
 
+# Trivial change to trigger workflow
