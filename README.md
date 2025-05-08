@@ -64,3 +64,5 @@ This package contains the source code for the Fagnoon Trip & Birthday Reservatio
 *   **HTTPS:** Replit typically provides HTTPS. Ensure all your URLs use `https://`.
 
 This guide should help you get started with deploying the application on Replit. Good luck!
+
+Triggering workflows.
