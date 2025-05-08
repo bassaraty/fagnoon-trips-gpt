@@ -1,0 +1,50 @@
+name: React CI
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "fagnoon_frontend/**"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "fagnoon_frontend/**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./fagnoon_frontend
+
+    strategy:
+      matrix:
+        node-version: [18.x] # Specify your project's Node.js version
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: "npm"
+        cache-dependency-path: fagnoon_frontend/package-lock.json
+
+    - name: Install Dependencies
+      run: npm ci
+
+    # - name: Run linters (e.g., ESLint)
+    #   run: npm run lint # Add this if you have a lint script
+
+    # - name: Run tests
+    #   run: npm test # Add this if you have a test script
+
+    - name: Build
+      run: npm run build
+      env:
+        REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }} # Example for build-time env var
+
