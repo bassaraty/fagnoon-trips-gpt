@@ -12,24 +12,28 @@ class AuthenticationTest extends TestCase
 
     public function test_users_can_authenticate_using_the_login_screen(): void
     {
+        $this->withoutMiddleware(\App\Http\Middleware\VerifyCsrfToken::class);
+
         $user = User::factory()->create();
 
-        $response = $this->post('/login', [
-            'email' => $user->email,
-            'password' => 'password',
+        $response = $this->postJson("/login", [
+            "email" => $user->email,
+            "password" => "password",
         ]);
 
-        $this->assertAuthenticated();
+        $this->assertAuthenticatedAs($user);
         $response->assertNoContent();
     }
 
     public function test_users_can_not_authenticate_with_invalid_password(): void
     {
+        $this->withoutMiddleware(\App\Http\Middleware\VerifyCsrfToken::class);
+
         $user = User::factory()->create();
 
-        $this->post('/login', [
-            'email' => $user->email,
-            'password' => 'wrong-password',
+        $this->postJson("/login", [
+            "email" => $user->email,
+            "password" => "wrong-password",
         ]);
 
         $this->assertGuest();
@@ -37,11 +41,14 @@ class AuthenticationTest extends TestCase
 
     public function test_users_can_logout(): void
     {
+        $this->withoutMiddleware(\App\Http\Middleware\VerifyCsrfToken::class);
+
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->post('/logout');
+        $response = $this->actingAs($user)->postJson("/logout");
 
         $this->assertGuest();
         $response->assertNoContent();
     }
 }
+
