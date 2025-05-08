@@ -16,3 +16,4 @@ yarn-error.log
 phpcs.xml
 phpunit.xml
 
+!database/database.sqlite
